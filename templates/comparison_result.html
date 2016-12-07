@@ -1,0 +1,60 @@
+{% extends "comparison.html" %}
+{% block result_content %}
+<div id="table1"></div>
+
+<script>
+
+diff = {{differences}}
+
+google.charts.load('current', {'packages':['table']});
+google.charts.setOnLoadCallback(drawTable);
+
+function drawTable() {
+  var data = new google.visualization.DataTable();
+  data.addColumn('number', 'Voter Eligible Population');
+  data.addColumn('number', 'White');
+  data.addColumn('number', 'African-American');
+  data.addColumn('number', 'Hispanic');
+  data.addColumn('number', 'Other');
+  data.addColumn('number', 'GDP');
+
+  data.addRow(diff[0]);
+
+  var formatter = new google.visualization.NumberFormat(
+      {negativeColor: 'red'});
+  formatter.format(data, 0);
+  formatter.format(data, 1);
+  formatter.format(data, 2);
+  formatter.format(data, 3);
+  formatter.format(data, 4);
+  formatter.format(data, 5);
+  var formatter2 = new google.visualization.NumberFormat(
+      {prefix: '$'});
+  formatter2.format(data, 5);
+
+  var options = {
+    allowHtml : true,
+    width: '100%',
+    height: '10%',
+  }
+
+  var table = new google.visualization.Table(document.getElementById('table1'));
+
+  table.draw(data, options);
+}
+
+year_1 = {{year1}}
+year_2 = {{year2}}
+for (var i = 0; i < form1.elements.length; i++ ) {
+    if (form1.elements[i].name == 'year1') {
+        if (form1.elements[i].value == year_1) {
+            form1.elements[i].checked = true;
+        }
+    }else if(form1.elements[i].name == 'year2') {
+      if (form1.elements[i].value == year_2) {
+          form1.elements[i].checked = true;
+      }
+    }
+}
+</script>
+{% endblock %}

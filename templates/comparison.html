@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 align="center" >Historical Election Influence</h2>
+<div style="padding:25px">
+  <p>Here, you can select between two elections and compare the differences in their results. On the right hand side of the page, we will display positive numbers when Election 1 had greater results and negative numbers when Election 2 had greater results.
+</p>
+  <p>Use this data in conjunction with the analysis of the previous page to see how elections compare given their voter influences. By looking at the default example of 2012 and 1988, we can see that voter turnout was six percentage points higher and the GDP was more than $14,000 higher for the 2012 election. Are people more motivated to vote when the country is thriving economically?
+</p>
+</div>
+ <div class="row">
+   <div class="col-xs-4">
+     <h3 style="padding-left: 25px">Compare Two Election Years</h3>
+   </div>
+   <div class="col-xs-7">
+     <h3 align="center">Differences Results</h3>
+  </div>
+</div>
+<div style="padding-left: 25px" class="row">
+  <form action="result" name="form1" method="post">
+        <div class="col-xs-2">
+          <h4>Year 1</h4>
+          <input type="radio" name="year1" value="2012" checked="true"> 2012 <br>
+          <input type="radio" name="year1" value="2008"> 2008 <br>
+          <input type="radio" name="year1" value="2004"> 2004 <br>
+          <input type="radio" name="year1" value="2000"> 2000 <br>
+          <input type="radio" name="year1" value="1996"> 1996 <br>
+          <input type="radio" name="year1" value="1992"> 1992 <br>
+          <input type="radio" name="year1" value="1988"> 1988 <br>
+        </div>
+        <div class="col-xs-2">
+          <h4>Year 2</h4>
+          <input type="radio" name="year2" value="2012"> 2012 <br>
+          <input type="radio" name="year2" value="2008"> 2008 <br>
+          <input type="radio" name="year2" value="2004"> 2004 <br>
+          <input type="radio" name="year2" value="2000"> 2000 <br>
+          <input type="radio" name="year2" value="1996"> 1996 <br>
+          <input type="radio" name="year2" value="1992"> 1992 <br>
+          <input type="radio" name="year2" value="1988" checked="true"> 1988 <br>
+        </div>
+    <div class="col-xs-7">
+      {% block result_content %}{% endblock %}
+    </div>
+</div>
+  <br>
+  <div class="row">
+    <div align="center" class="col-xs-1">
+      <input type="submit" value="Submit"/>
+    </div>
+  </div>
+  </form>
+
+  <div style="padding: 25px">
+    <h3>Find Similar Elections</h3>
+    <p>When you have a particular Election year in mind, we give you the option of finding similar election years based off your chosen thresholds. Once narrowed down to a select few, notice that the election winner and the parties controlling the two chambers of Congress are included.</p>
+    <p>If 2008 and 2012 had very similar white voter turnout and same party President-Elect, will 2016 have the same party President-Elect given similar white voter turnout?</p>
+  </div>
+  <div style="padding-left: 25px" class="row">
+    <form action="similar_election" name="form2" method="post">
+          <div class="col-xs-2">
+            <input type="radio" name="year" value="2012" checked="true"> 2012 <br>
+            <input type="radio" name="year" value="2008"> 2008 <br>
+            <input type="radio" name="year" value="2004"> 2004 <br>
+            <input type="radio" name="year" value="2000"> 2000 <br>
+            <input type="radio" name="year" value="1996"> 1996 <br>
+            <input type="radio" name="year" value="1992"> 1992 <br>
+            <input type="radio" name="year" value="1988"> 1988 <br>
+          </div>
+          <div class="col-xs-6">
+            <input type="number" name="vep" value="100" min="0" max="100" required="true"> <label>% points away from selected election for V.E.P Turnout</label><br>
+            <input type="number" name="white" value="100" min="0" max="100" required="true"> <label>% points away from selected election for White Turnout</label><br>
+            <input type="number" name="black" value="100" min="0" max="100" required="true"> <label>% points away from selected election for African-American Turnout</label><br>
+            <input type="number" name="hispanic" value="100" min="0" max="100" required="true"> <label>% points away selected election for Hispanic Turnout</label><br>
+            <input type="number" name="other" value="100" min="0" max="100" required="true"> <label>% points away to selected election for Other Turnout</label><br>
+            <input type="number" name="gdp" value="100000" min="0" required="true"> <label>Dollars away to selected election for GDP</label><br>
+          </div>
+      </div>
+      <br>
+      <div class="row">
+        <div align="center" class="col-xs-1">
+          <input type="submit" value="Submit"/>
+        </div>
+      </div>
+      </form>
+      <h3 align="center">Similarity Results</h3>
+</div>
+{% block result2_content %}{% endblock %}
+
+<h2 align="center" >Political Influence</h2>
+<p style="padding: 25px">In order for the United States to move forward, the President and the two Chambers of Congress, the Senate and the House of Representatives, need to work in unison. Here we let the user select any combination of parties for the President and the two chambers to see what parties were in control during their election.
+</p>
+<div class="row">
+  <div class="col-xs-6">
+    <h3 style="padding-left: 25px">Pick Congressional Majorities</h3>
+  </div>
+  <div class="col-xs-6">
+    <h3 align="center">Results</h2>
+  </div>
+</div>
+<div style="padding-left: 25px" class="row">
+     <form action="congress" name="form3" method="post">
+      <div class="col-xs-2">
+        <h4>Senate</h4>
+        <input type="radio" name="senate" value="Democrat" checked="true"> Democrat <br>
+        <input type="radio" name="senate" value="Republican"> Republican <br>
+      </div>
+      <div class="col-xs-4">
+        <h4>House of Representatives</h4>
+        <input type="radio" name="house" value="Democrat" checked="true"> Democrat <br>
+        <input type="radio" name="house" value="Republican"> Republican <br>
+      </div>
+    <div class="col-xs-6">
+      <div align="center">
+        {% block result3_content %}{% endblock %}
+     </div>
+    </div>
+</div>
+    <br>
+    <div class="row">
+      <div align="center" class="col-xs-1">
+        <input type="submit" value="Submit"/>
+      </div>
+    </div>
+  </form>
+
+
+{% endblock %}

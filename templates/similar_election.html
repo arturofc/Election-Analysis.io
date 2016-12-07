@@ -1,0 +1,77 @@
+{% extends "comparison.html" %}
+{% block result2_content %}
+<div id="table2"></div>
+
+<script>
+document.getElementById('table2').scrollIntoView();
+compare = {{compare|safe}}
+
+google.charts.load('current', {'packages':['table']});
+google.charts.setOnLoadCallback(drawTable2);
+
+function drawTable2() {
+  var numCols = compare.length
+  var data = new google.visualization.DataTable();
+  data.addColumn('number', 'Year');
+  data.addColumn('number', 'Voter Eligible Population');
+  data.addColumn('number', 'White');
+  data.addColumn('number', 'African-American');
+  data.addColumn('number', 'Hispanic');
+  data.addColumn('number', 'Other');
+  data.addColumn('number', 'GDP');
+  data.addColumn('string', 'President-Elect');
+  data.addColumn('string', 'President-Elect Party');
+  data.addColumn('string', 'Senate Majority');
+  data.addColumn('string', 'House of Representatives Majority');
+
+  for (var i = 0; i < numCols; i++)
+    data.addRow(compare[i]);
+
+  var formatter = new google.visualization.NumberFormat(
+      {pattern: '####'});
+  formatter.format(data, 0);
+  var formatter2 = new google.visualization.NumberFormat(
+      {prefix: '$'});
+  formatter2.format(data, 6);
+
+  var options = {
+    showRowNumber: true,
+    width: '100%',
+    height: '50%'
+  }
+
+  var table = new google.visualization.Table(document.getElementById('table2'));
+
+  table.draw(data, options);
+}
+
+sYear = {{year}}
+sVep = {{vep}}
+sWhite = {{white}}
+sBlack = {{black}}
+sHispanic = {{hispanic}}
+sOther = {{other}}
+sGdp = {{gdp}}
+
+for (var i = 0; i < form2.elements.length; i++ ) {
+    if (form2.elements[i].name == 'year') {
+        if (form2.elements[i].value == sYear) {
+            form2.elements[i].checked = true;
+        }
+    }else if(form2.elements[i].name == 'vep') {
+      form2.elements[i].value = sVep;
+    }else if(form2.elements[i].name == 'white') {
+      form2.elements[i].value = sWhite;
+    }else if(form2.elements[i].name == 'black') {
+      form2.elements[i].value = sBlack;
+    }else if(form2.elements[i].name == 'hispanic') {
+      form2.elements[i].value = sHispanic;
+    }else if(form2.elements[i].name == 'other') {
+      form2.elements[i].value = sOther;
+    }else if(form2.elements[i].name == 'gdp') {
+      form2.elements[i].value = sGdp;
+    }
+}
+
+</script>
+{% endblock %}

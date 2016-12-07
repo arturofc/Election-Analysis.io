@@ -1,0 +1,16 @@
+branch-defaults:
+  default:
+    environment: null
+    group_suffix: null
+  master:
+    environment: election-analysis
+    group_suffix: null
+global:
+  application_name: election-analysis
+  branch: null
+  default_ec2_keyname: # Add your keypair
+  default_platform: python3.4
+  default_region: us-west-2
+  profile: eb-cli
+  repository: null
+  sc: git

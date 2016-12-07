@@ -1,0 +1,56 @@
+{% extends "comparison.html" %}
+{% block result3_content %}
+<div id="table3"></div>
+
+<script>
+document.getElementById('table3').scrollIntoView();
+
+congress = {{congress|safe}}
+
+google.charts.load('current', {'packages':['table']});
+google.charts.setOnLoadCallback(drawTable3);
+
+function drawTable3() {
+  var numCols = congress.length
+  var data = new google.visualization.DataTable();
+  data.addColumn('number', 'Year');
+  data.addColumn('string', 'President');
+  data.addColumn('string', 'Party');
+  data.addColumn('string', 'Senate');
+  data.addColumn('string', 'House of Representatives');
+
+  for (var i = 0; i < numCols; i++)
+    data.addRow(congress[i]);
+
+  var formatter = new google.visualization.NumberFormat(
+      {pattern: '####'});
+  formatter.format(data, 0);
+
+  var options = {
+    showRowNumber: true,
+    width: '80%',
+    height: '25%',
+  }
+
+  var table = new google.visualization.Table(document.getElementById('table3'));
+
+  table.draw(data, options);
+}
+
+senate = {{senate|safe}}
+house = {{house|safe}}
+
+for (var i = 0; i < form3.elements.length; i++ ) {
+    if (form3.elements[i].name == 'senate') {
+        if (form3.elements[i].value == senate) {
+            form3.elements[i].checked = true;
+        }
+    }else if(form3.elements[i].name == 'house') {
+      if (form3.elements[i].value == house) {
+          form3.elements[i].checked = true;
+      }
+    }
+}
+
+</script>
+{% endblock %}

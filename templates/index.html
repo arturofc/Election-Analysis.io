@@ -1,0 +1,394 @@
+{% extends "base.html" %}
+{% block content %}
+<br>
+<h2 align="center">About Us</h2>
+  <div style="padding-left: 10px">
+    <p>Here at Election-Analysis.io, we believe that elections are heavily influenced by factors not relating to the actual candidates themselves and more on historical trends and population behavior. With the use of our proprietary algorithms and databases, we provide the tools necessary to analyze well known data and uncover surprising trends and correlations.</p>
+<h2 align="center">Four Major Factors</h2>
+  <p>
+    The four major factors we believe affect elections are
+    <ul>
+      <li><strong>Voter Influence</strong></li>
+      <li><strong>State Infuence</strong></li>
+      <li><strong>Historical Election Influence</strong></li>
+      <li><strong>Party Influence</strong></li>
+    </ul>
+    All four of these factors in conjuction are shown to be more than or equally important to the individual candidates themselves. This leads us to the question: Are the candidates the stars of the show or are we?
+  </p>
+</div >
+<h2 align="center">Voter Influence</h2>
+<p style="padding-left: 10px">
+  In this section we'll see the influence that voters impose on elections given their individual data. ​ Here, we analyze Gross Domestic Product per capita, education level, voter eligible population, and voter race demoseeing graphics. User's have the ability to inspect yearly data by simply interacting with our graphs and the correlation between data points.
+
+</p>
+<div style="padding-left: 10px">
+  <p></p>
+</div>
+
+<div align="center">
+  <p>In Voter Turnout Data, we have five lines of information. Voter Eligible Population is the total population of citizens that are registered to vote. For example, in 1988, 53% turnout rate for VEP means 53% of eligible voters came out to vote. Likewise, 39% of the Hispanics in the VEP came out to vote. Patterns to keep an eye on are VEP turnout drops during a President's second term campaign; the non-white vote began increasing after 2000.
+  </p>
+  <div id="voter_graph"></div>
+  <br>
+  <p>
+    Our Gross Domestic Product per capita graph shows the average income per year in the United States. Aside from the positive increase year after year, it is important to note the drastic changes in the early 1990's recession and the bank bailout at the end of 2008. Were people more inclined to participate in elections given the poor economic state of the country or did they lose faith in the government's ability to impose change? Was there a larger turnout during economic success in order to get more lenient tax laws?
+  </p>
+  <div id="gdp_graph"></div>
+  <br>
+  <p>
+    Below are levels of education for the voter eligible population. For example, 62% of all eligible voters who had Post-Graduate educations came out to vote.
+  </p>
+  <div id="edu_graph"></div>
+</div>
+<br>
+<div style="padding-left: 25px" class="row">
+    <div class="col-xs-2">
+      <div id="colFilter_div"></div>
+   </div>
+    <div class="col-xs-10">
+      <p>
+Below are all of the data compiled into a more general graph where you can more easily see trends.
+      </p>
+      <div id="super_graph"></div>
+    </div>
+</div>
+<br>
+<h2 align="center">State Influence</h2>
+<p>By compiling average state income against the dominant party of that state, we can see any relations between money and political affiliation. It becomes apparent that states tend to side with one side after crossing an income threshold.</p>
+<div id="state_graph"></div>
+<script type="text/javascript">
+
+google.charts.load('current', {'packages':['corechart', 'line', 'controls']});
+google.charts.setOnLoadCallback(drawCharts);
+
+var voter = {{voter}}
+var gdp = {{gdp}}
+var edu = {{education}}
+var sup = {{sup}}
+var state = {{state|safe}}
+
+function drawCharts() {
+  // voter graph
+  var voter_numRows = voter.length
+  var voter_numCols = voter[0].length
+
+  var voter_data = new google.visualization.DataTable();
+
+  voter_data.addColumn('number', 'Year')
+  voter_data.addColumn('number', 'Turnout of Voter Eligible Population (Total registered voters who participated)')
+  voter_data.addColumn('number', 'White')
+  voter_data.addColumn('number', 'African-American')
+  voter_data.addColumn('number', 'Hispanic')
+  voter_data.addColumn('number', 'Other')
+
+  for (var i = 0; i < voter_numRows; i++)
+    voter_data.addRow(voter[i]);
+
+  var formatter1 = new google.visualization.NumberFormat(
+   {pattern: '####'});
+   formatter1.format(voter_data, 0);
+  var formatter2 = new google.visualization.NumberFormat(
+   {pattern: '##\'%\''});
+   formatter2.format(voter_data, 1);
+  var formatter3 = new google.visualization.NumberFormat(
+  {pattern: '##\'%\''});
+  formatter3.format(voter_data, 2);
+  var formatter4 = new google.visualization.NumberFormat(
+   {pattern: '##\'%\''});
+   formatter4.format(voter_data, 3);
+  var formatter5 = new google.visualization.NumberFormat(
+   {pattern: '##\'%\''});
+   formatter5.format(voter_data, 4);
+  var formatter6 = new google.visualization.NumberFormat(
+   {pattern: '##\'%\''});
+   formatter6.format(voter_data, 5);
+
+  var voter_options = {
+    chart: {
+      title: 'Voter Turnout Data',
+      subtitle: 'Percentage of eligible (registered) voters who participated in a given election year'
+    },
+    hAxis: {format: '####'},
+    width: 900,
+    height: 500,
+  };
+
+  var voter_chart = new google.charts.Line(document.getElementById('voter_graph'));
+
+  voter_chart.draw(voter_data, google.charts.Line.convertOptions(voter_options));
+  //gdp graph
+  var gdp_numRows = gdp.length
+  var gdp_numCols = gdp[0].length
+
+  var gdp_data = new google.visualization.DataTable();
+
+  gdp_data.addColumn('number', 'Year');
+  gdp_data.addColumn('number', 'GDP')
+
+  for (var i = 0; i < gdp_numRows; i++)
+    gdp_data.addRow(gdp[i]);
+
+  var formatter1 = new google.visualization.NumberFormat(
+   {pattern: '####'});
+   formatter1.format(gdp_data, 0);
+  var formatter2 = new google.visualization.NumberFormat(
+   {pattern: '$##,###'});
+   formatter2.format(gdp_data, 1);
+
+
+  var gdp_options = {
+    chart: {
+      title: 'GDP Per Capita',
+      subtitle: 'Adjusted for inflation'
+    },
+    hAxis: {format: '####'},
+    width: 900,
+    height: 500,
+  };
+
+  var gdp_chart = new google.charts.Line(document.getElementById('gdp_graph'));
+
+  gdp_chart.draw(gdp_data, google.charts.Line.convertOptions(gdp_options));
+
+  //education graph
+  var edu_numRows = edu.length
+  var edu_numCols = edu[0].length
+
+  var edu_data = new google.visualization.DataTable();
+
+  edu_data.addColumn('number', 'Year');
+  edu_data.addColumn('number', 'Below Highschool')
+  edu_data.addColumn('number', 'Highschool')
+  edu_data.addColumn('number', 'College')
+  edu_data.addColumn('number', 'Post-Graduate')
+
+  for (var i = 0; i < edu_numRows; i++)
+    edu_data.addRow(edu[i]);
+
+  var formatter1 = new google.visualization.NumberFormat(
+   {pattern: '####'});
+   formatter1.format(edu_data, 0);
+  var formatter2 = new google.visualization.NumberFormat(
+   {pattern: '##\'%\''});
+   formatter2.format(edu_data, 1);
+  var formatter3 = new google.visualization.NumberFormat(
+  {pattern: '##\'%\''});
+  formatter3.format(edu_data, 2);
+  var formatter4 = new google.visualization.NumberFormat(
+   {pattern: '##\'%\''});
+   formatter4.format(edu_data, 3);
+  var formatter5 = new google.visualization.NumberFormat(
+   {pattern: '##\'%\''});
+   formatter5.format(edu_data, 4);
+
+
+  var edu_options = {
+    chart: {
+      title: 'Completed Education',
+      subtitle: 'Percentage Per Year'
+    },
+    hAxis: {format: '####'},
+    width: 900,
+    height: 500,
+  };
+
+  var edu_chart = new google.charts.Line(document.getElementById('edu_graph'));
+
+  edu_chart.draw(edu_data, google.charts.Line.convertOptions(edu_options));
+
+  //super graph
+  var sup_numCols = edu.length
+
+  var sup_data = new google.visualization.DataTable();
+
+  sup_data.addColumn('number', 'Year');
+  sup_data.addColumn('number', 'V.E.P');
+  sup_data.addColumn('number', 'White Turnout');
+  sup_data.addColumn('number', 'African-American Turnout');
+  sup_data.addColumn('number', 'Hispanic Turnout');
+  sup_data.addColumn('number', 'Other Turnout');
+  sup_data.addColumn('number', 'GDP');
+  sup_data.addColumn('number', 'Below Highschool Education');
+  sup_data.addColumn('number', 'Highschool Education');
+  sup_data.addColumn('number', 'College Education');
+  sup_data.addColumn('number', 'Post-Graduate Education');
+
+  for (var i = 0; i < sup_numCols; i++)
+    sup_data.addRow(sup[i]);
+
+  var columnsTable = new google.visualization.DataTable();
+  columnsTable.addColumn('number', 'colIndex');
+  columnsTable.addColumn('string', 'colLabel');
+  var initState= {selectedValues: []};
+  // put the columns into this data table (skip column 0)
+  for (var i = 1; i < sup_data.getNumberOfColumns(); i++) {
+      columnsTable.addRow([i, sup_data.getColumnLabel(i)]);
+      initState.selectedValues.push(sup_data.getColumnLabel(i));
+  }
+
+  var formatter1 = new google.visualization.NumberFormat(
+    {pattern: '####'});
+    formatter1.format(sup_data, 0);
+  var formatter2 = new google.visualization.NumberFormat(
+    {pattern: '##\'%\''});
+    formatter2.format(sup_data, 1);
+  var formatter3 = new google.visualization.NumberFormat(
+    {pattern: '##\'%\''});
+    formatter3.format(sup_data, 2);
+  var formatter4 = new google.visualization.NumberFormat(
+    {pattern: '##\'%\''});
+    formatter4.format(sup_data, 3);
+  var formatter5 = new google.visualization.NumberFormat(
+    {pattern: '##\'%\''});
+    formatter5.format(sup_data, 4);
+  var formatter6 = new google.visualization.NumberFormat(
+    {pattern: '##\'%\''});
+    formatter6.format(sup_data, 5);
+  var formatter7 = new google.visualization.NumberFormat(
+    {pattern: '$##,###'});
+    formatter7.format(sup_data, 6);
+  var formatter8 = new google.visualization.NumberFormat(
+    {pattern: '##\'%\''});
+    formatter8.format(sup_data, 7);
+  var formatter9 = new google.visualization.NumberFormat(
+    {pattern: '##\'%\''});
+    formatter9.format(sup_data, 8);
+  var formatter10 = new google.visualization.NumberFormat(
+    {pattern: '##\'%\''});
+    formatter10.format(sup_data, 9);
+  var formatter11 = new google.visualization.NumberFormat(
+    {pattern: '##\'%\''});
+    formatter11.format(sup_data, 10);
+
+
+  var columnFilter = new google.visualization.ControlWrapper({
+    controlType: 'CategoryFilter',
+    containerId: 'colFilter_div',
+    dataTable: columnsTable,
+    options: {
+        filterColumnLabel: 'colLabel',
+        ui: {
+            label: 'Data Points',
+            allowTyping: false,
+            allowMultiple: true,
+            selectedValuesLayout: 'belowStacked',
+        }
+    },
+    state: initState
+  });
+
+  function setChartView () {
+    var state = columnFilter.getState();
+    var row;
+    var gdp_index;
+    var other_index = [];
+    var view = {
+        columns: [0]
+    };
+    for (var i = 0; i < state.selectedValues.length; i++) {
+        row = columnsTable.getFilteredRows([{column: 1, value: state.selectedValues[i]}])[0];
+        view.columns.push(columnsTable.getValue(row, 0));
+        if(state.selectedValues[i] == 'GDP'){
+          gdp_index = i;
+        }else{
+          other_index.push(i);
+        }
+    }
+
+    // // sort the indices into their original order
+    // view.columns.sort(function (a, b) {
+    //     return (a - b);
+    // });
+
+    var one = other_index[0];
+    var two = other_index[1];
+    var three = other_index[2];
+    var four = other_index[3];
+    var five = other_index[4];
+    var six = other_index[5];
+    var seven = other_index[6];
+    var eight = other_index[7];
+    var nine = other_index[8];
+
+    var options = {
+        title: 'Combined Graph',
+        width: 1050,
+        height: 500,
+        hAxis: {format: '####'},
+        series: {
+
+        },
+        axes : {
+          y: {
+            Percentage: {label: 'Percentage'},
+            Income: {label: 'GDP'}
+          }
+        }
+    }
+
+    options.series[gdp_index] = {axis: 'Income'};
+    options.series[one] = {axis: 'Percentage'};
+    options.series[two] = {axis: 'Percentage'};
+    options.series[three] = {axis: 'Percentage'};
+    options.series[four] = {axis: 'Percentage'};
+    options.series[five] = {axis: 'Percentage'};
+    options.series[six] = {axis: 'Percentage'};
+    options.series[seven] = {axis: 'Percentage'};
+    options.series[eight] = {axis: 'Percentage'};
+    options.series[nine] = {axis: 'Percentage'};
+
+    var chart = new google.visualization.ChartWrapper({
+      chartType: 'google.charts.Line',
+      containerId: 'super_graph',
+      dataTable: sup_data,
+      options:  google.charts.Line.convertOptions(options)
+    });
+
+    chart.setView(view);
+    chart.draw();
+  }
+
+  google.visualization.events.addListener(columnFilter, 'statechange', setChartView);
+
+  setChartView();
+  columnFilter.draw();
+
+  //state graph
+  var state_numCols = state.length;
+
+  var state_data = new google.visualization.DataTable();
+
+  state_data.addColumn('string', 'State');
+  state_data.addColumn('number', 'Average Income');
+  state_data.addColumn({role: "style", type: "string"});
+
+  for (var i = 0; i < state_numCols; i++)
+    state_data.addRow(state[i]);
+
+  var formatter2 = new google.visualization.NumberFormat(
+   {pattern: '$##,###'});
+   formatter2.format(state_data, 1);
+
+  var state_options = {
+    title: '2016 State Election Results and Average Income',
+    width: 1400,
+    height: 500,
+    vAxis: {
+      title: 'Average Income',
+    },
+    hAxis: {
+      textPosition: 'none',
+      title: 'State',
+   },
+    legend: {position: 'none'},
+  };
+
+  var state_chart = new google.visualization.ColumnChart(document.getElementById('state_graph'));
+
+  state_chart.draw(state_data, state_options);
+
+}
+
+</script>
+
+{% endblock %}

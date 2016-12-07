@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title></title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="http://fonts.googleapis.com/css?family=Abel|Open+Sans:400,600" rel="stylesheet" />
+    <!-- Load Bootstrap-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div align="center">
+        <img src="{{url_for('static', filename='logo.png')}}" alt="vote" height="100" width="450"/>
+        <p>Created by Arturo Corro &amp; Steven Barrios</a></p>
+        <div class="btn-group" role="group" aria-label="...">
+          <a href="/" class="btn btn-default">Voter/State Influences</a>
+          <a href="/election-comparison/" class="btn btn-default">Historical-Election/Party Influences</a>
+          <a href="/analysis/" class="btn btn-default">Pitch/Analysis</a>
+        </div>
+    </div>
+    <br>
+    {% block content %} {% endblock %}
+  </body>
+  </html>
+</html>
